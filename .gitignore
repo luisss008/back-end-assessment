@@ -1,0 +1,14 @@
+*.class
+*.iml
+*.project
+.DS_Store
+.classpath
+.idea
+.settings
+.vagrant
+nb-configuration.xml
+/*/config/
+/*/target/
+/target/
+*.swp
+*.csv
