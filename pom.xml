@@ -11,6 +11,7 @@
     <properties>
         <com.google.code.gson-version>2.5</com.google.code.gson-version>
         <commons-csv-version>1.5</commons-csv-version>
+        <junit-version>4.11</junit-version>
     </properties>
 
     <dependencies>
@@ -23,6 +24,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
             <version>${commons-csv-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit-version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>

@@ -20,19 +20,18 @@ import java.util.stream.Collectors;
 
 public class CSVTransactionDao<T extends Serializable, E extends Serializable> implements TransactionDao<T,E> {
 
-    private static final String TRANSACTION_FILE_NAME = "transactions.csv";
     private CSVPrinter printer;
     private CSVParser parser;
 
-    public CSVTransactionDao() throws IOException {
+    public CSVTransactionDao(String fileName) throws IOException {
 
-        File file = new File(TRANSACTION_FILE_NAME);
+        File file = new File(fileName);
         file.createNewFile();
 
         FileWriter out = new FileWriter(file, true);
         this.printer = new CSVPrinter(out, CSVFormat.DEFAULT );
 
-        Reader reader = Files.newBufferedReader(Paths.get(TRANSACTION_FILE_NAME));
+        Reader reader = Files.newBufferedReader(Paths.get(fileName));
         this.parser = new CSVParser(reader, CSVFormat.DEFAULT);
     }
 
@@ -54,7 +53,7 @@ public class CSVTransactionDao<T extends Serializable, E extends Serializable> i
         CSVRecord record = findOnFile( transactionId, 0);
         String recordUserId = record.get(1);
         if (!recordUserId.equals( String.valueOf(userId))){
-            return null;
+            throw new RecordNotFoundException("No record found");
         }
 
         Transaction<T,E> transaction = mapTransaction(record, userId);
@@ -98,7 +97,7 @@ public class CSVTransactionDao<T extends Serializable, E extends Serializable> i
         transaction.setUserId(userId);
         transaction.setAmount(Double.valueOf(record.get(2)));
         transaction.setDescription(record.get(3));
-        transaction.setDate(new Date());
+        transaction.setDate(new Date(record.get(4)));
         return transaction;
     }
 }

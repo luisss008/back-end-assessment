@@ -7,6 +7,7 @@ import java.util.Date;
 
 public class Transaction<T extends Serializable, E extends Serializable> {
 
+    @SerializedName("transaction_id")
     private T transactionId;
     @SerializedName("user_id")
     private E userId;

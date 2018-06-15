@@ -6,6 +6,7 @@ import assessment.data.domain.Transaction;
 import assessment.data.exception.RecordNotFoundException;
 import assessment.adapter.CommandLineTransactionAdapter;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class CommandLineTransactionStorageAdapter implements CommandLineTransact
     public String add(int userId, String jsonString) {
         Transaction<String, Integer> transaction = new Gson().fromJson(jsonString,  new TypeToken<Transaction<String,Integer>>(){}.getType());
         transaction.setUserId(userId);
-        return transactionDao.add(transaction).getTransactionId();
+        return new Gson().toJson(transactionDao.add(transaction));
     }
 
     public Optional<String> get(int userId, String transactionId) {
@@ -46,6 +47,9 @@ public class CommandLineTransactionStorageAdapter implements CommandLineTransact
         for (Transaction<String,Integer> transaction : list) {
             sum = sum + transaction.getAmount();
         }
-        return String.valueOf(sum);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("user_id", userId);
+        jsonObject.addProperty("sum", sum);
+        return jsonObject.toString();
     }
 }
